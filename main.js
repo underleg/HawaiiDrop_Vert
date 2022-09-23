@@ -136,6 +136,35 @@ function createFGMeters() {
 
 
 ////////////////////////////////////////////////////////
+function createTally() {
+
+
+  let name = "gfx/message_bar.png";
+  tallybg = PIXI.Sprite.from(name);
+  app.stage.addChild(tallybg);
+  tallybg.anchor.x = tallybg.anchor.y = 0.5;
+  tallybg.x = 538;
+  tallybg.y = 1268;
+  tallybg.visible = true;
+
+  const fontStyle = new PIXI.TextStyle({
+    fontFamily: 'Arial',
+    align: "center",
+    fontSize: 96,
+    fontWeight: 'bold',
+    fill: ['#ffffff'],
+  });
+
+
+  tallyMtr = new PIXI.Text(0, fontStyle);
+  tallyMtr.anchor.x = tallyMtr.anchor.y = 0.5;
+  tallybg.addChild(tallyMtr);
+  tallyMtr.text = "0";
+
+}
+
+
+////////////////////////////////////////////////////////
 function dropBall(useRecorded = false) {
 
   if (state == STATE_WAIT) {
@@ -154,8 +183,7 @@ function dropBall(useRecorded = false) {
 
 
     randomizePegs();
-    shuffleBalls();
-
+   
     if (useRecorded) {
       setRecordedBallToDrop();
     } else {
@@ -206,7 +234,6 @@ function handleWaitState(delta) {
   if (pegChangeTimer > pegChangeInterval) {
     pegChangeTimer -= pegChangeInterval;
     randomizePegs();
-    shuffleBalls();
   }
 
   if (useRecordedBall == true) {
@@ -290,6 +317,7 @@ function ready() {
   createMeters();
   createFGMeters();
   createButton();
+  createTally();
 
   randomizePegs();
 

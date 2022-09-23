@@ -32,11 +32,27 @@ const minLimitX = -80;
 const maxLimitX = xsize + 80;
 
 
+let tallybg;
+let tallyMtr;
+
 let autoRecord = false;
 let autoRecordNumber = 0;
 
 let useRecordedBall = false;
 let recordedBallIdx = 0;
+
+
+const launchBallX = 65;
+const launchBallStartY = 565;
+const launchBallStartDY = 89;
+
+const launcherX = 65;
+const launcherY = 821;
+const launcherTopY = 525;
+
+const launcherMaskW = 108;
+const launcherMaskH = 574
+
 
 function shuffle(array) {
   let currentIndex = array.length, randomIndex;

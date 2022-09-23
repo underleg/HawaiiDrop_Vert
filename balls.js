@@ -3,11 +3,23 @@ let resetDropBalls = [];
 
 let droppingBall = null;
 
-let dropPositions = [{ x: halfx - pegDX, y: 91 }, { x: halfx, y: 91 }, { x: halfx + pegDX, y: 91 }];
+let tube;
+let launcher;
+let launcherMask;
 
 let BALLTYPE_CASH = 1;
 let BALLTYPE_DIAMOND = 2;
 let BALLTYPE_FG = 3;
+
+
+/*
+const launchBallX = 65;
+const launchBallStartY = 565;
+const launchBallStartDY = 76;
+
+const launcherX = 65;
+const launcherY = 821;
+*/
 
 
 ////////////////////////////////////
@@ -24,6 +36,35 @@ function moveBall(timeDelta) {
     droppingBall.sprite.x > maxLimitX) {
     droppingBall.outOfBounds = true;
   }
+  
+}
+
+///////////////////////////////////////
+//
+function createLauncher() {
+  let name = "gfx/tube.png";
+  tube = PIXI.Sprite.from(name);
+  app.stage.addChild(tube);
+  tube.anchor.x = tube.anchor.y = 0.5;
+  tube.x = launcherX;
+  tube.y = launcherY;
+
+
+  name = "gfx/launcher.png";
+  launcher = PIXI.Sprite.from(name);
+  app.stage.addChild(launcher);
+  launcher.anchor.x = 0.5;
+  launcher.anchor.y = 0.0;
+  launcher.x = launcherX;
+  launcher.y = launcherTopY;
+
+  launcherMask = PIXI.Sprite.from("gfx/launcherMask.png");
+  app.stage.addChild(launcherMask);
+  launcherMask.anchor.x = launcherMask.anchor.y = 0.5;
+  launcherMask.x = launcherX;
+  launcherMask.y = launcherY;
+
+  launcher.mask = launcherMask;
   
 }
 
@@ -137,9 +178,8 @@ function recordPegCollision(hitPeg) {
 ////////////////////////////////////////////////////////
 function addBall(type, positionId) {
 
-  let x = dropPositions[positionId].x;
-  let y = dropPositions[positionId].y;
-
+  let x = launchBallX;
+  let y = launchBallStartY + dropBalls.length * launchBallStartDY;
 
   // BIG BALL
   let name = "gfx/ball_cash.png";
@@ -157,8 +197,11 @@ function addBall(type, positionId) {
   sprite.y = y;
   sprite.scale.x = sprite.scale.y = ballScale;
 
-  dropBalls[dropBalls.length] = { type: type, dx: 0.0, dy: 0.0, sprite: sprite, ballHit:[]   };
+  dropBalls[dropBalls.length] = { type: type, dx: 0.0, dy: 0.0, sprite: sprite, ballHit: [] };
   resetDropBalls[resetDropBalls.length] = { type: type, dx: 0.0, dy: 0.0, sprite: sprite };
+
+
+  launcher.y = launcherTopY + dropBalls.length * launchBallStartDY;
 }
 
 ////////////////////////////////////////////////////////
@@ -223,6 +266,7 @@ function setRecordedBallToDrop() {
  
 ////////////////////////////////////////////////////////
 function createBalls() {
+  createLauncher();
   addBall(BALLTYPE_CASH, 0);
   addBall(BALLTYPE_FG, 1);
   addBall(BALLTYPE_DIAMOND, 2);
@@ -231,30 +275,20 @@ function createBalls() {
 ////////////////////////////////////////////////////////
 function resetBalls() {
 
+  let y = launchBallStartY;
+
   for (let i = 0; i < resetDropBalls.length; ++i) {
     dropBalls[i] = resetDropBalls[i];
-    dropBalls[i].sprite.x = dropPositions[i].x;
-    dropBalls[i].sprite.y = dropPositions[i].y;
+    dropBalls[i].sprite.x = launchBallX;
+    dropBalls[i].sprite.y = y;
+    
     dropBalls[i].dx = 0.0;
     dropBalls[i].dy = 0.0;
 
+    y += launchBallStartDY;
   }
 }
 
-
-
-////////////////////////////////////////////////////////
-function shuffleBalls() {
-
-  let boxes = [0, 1, 2];
-
-  shuffle(boxes);
-
-  for (let i = 0; i < dropBalls.length; ++i) {
-    dropBalls[i].sprite.x = dropPositions[boxes[i]].x;
-    dropBalls[i].sprite.y = dropPositions[boxes[i]].y;
-  }
-}
 
 ////////////////////////////////////////////////////////
 function getDroppingBall() {
