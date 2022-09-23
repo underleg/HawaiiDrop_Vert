@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  
+    <head>
+        <meta charset="UTF-8" />
+        <title>Coconut Drop</title>
+    </head>
+
+    <body bgcolor="#FFFFFF">
+      <script src="https://pixijs.download/release/pixi.js"></script>
+      <script src="globals.js"></script>
+      <script src="pegs.js"></script>
+      <script src="balls.js"></script>
+      <script src="recorder.js"></script>
+      <script src="record.js"></script>
+      <script src="main.js"></script>
+
+      <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          ready();
+        });
+      </script>
+
+      <form id="gravity_form">
+        <label for="gravity">Gravity:</label>
+        <input type="number" id="gravity" value=0.5 name="gravity">  <br>
+      </form>
+      <form id="collisionLengthSquared_form">
+        <label for="collisionLengthSquared">Collision Length Squared:</label>
+        <input type="number" id="collisionLengthSquared" value="5000" name="collisionLengthSquared">  <br>
+      </form>
+      <form id="xbounce_form">
+        <label for="xbounce">X Bounce:</label>
+        <input type="number" id="xbounce" value=1.3 name="xbounce">  <br>
+      </form>
+      <form id="ybounce_form">
+        <label for="ybounce">Y Bounce:</label>
+        <input type="number" id="ybounce" value=1.5 name="ybounce">  <br>
+      </form>
+      <form id="dxLim_form">
+        <label for="dxLim">Dx Min Limit:</label>
+        <input type="number" id="dxLim" value=0.4 name="dxLim">  <br>
+      </form>
+
+      <form id="maxLim_form">
+        <label for="magLim">Magnitude Upper Limit:</label>
+        <input type="number" id="magLim" value=20 name="magLim">  <br>
+      </form>
+
+      <button type="button" onclick="writeRecord()">WriteRecord</button>
+      <button type="button" onclick="makeRecords(10)">Make 10 Records</button>
+      <button type="button" onclick="makeRecords(100)">Make 100 Records</button>
+      <button type="button" onclick="makeRecords(500)">Make 500 Records</button>
+      <button type="button" onclick="showRecordCounts()">Show Record Counts</button>
+      <!--
+  -->
+      <button type="button" onclick="dropRecord()">Drop Recorded Ball</button>
+      <button type="button" onclick="dropRecord(true)">Drop Same Recorded Ball</button>
+      <br />
+    </body>
+</html>
+
+
