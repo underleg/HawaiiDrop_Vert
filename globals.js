@@ -17,7 +17,7 @@ const halfx = xsize / 2;
 // 1.266
 
 const pegStartY = 274;
-const pegDX = 242;
+const pegDX = 252;//242;
 const pegDY = 196;
 
 const buttonX = halfx;
@@ -25,7 +25,7 @@ const buttonY = 1473;
 
 const pegChangeInterval = 30.0; // half second
 
-const pegScale = 0.8;
+const pegScale = 0.9;
 const ballScale = 0.85;
 
 const minLimitX = -80;
@@ -39,6 +39,7 @@ let autoRecord = false;
 let autoRecordNumber = 0;
 
 let useRecordedBall = false;
+let numRecordedBallCCHits = -1;
 let recordedBallIdx = 0;
 
 
@@ -49,9 +50,12 @@ const launchBallStartDY = 89;
 const launcherX = 65;
 const launcherY = 821;
 const launcherTopY = 525;
+const launcherBotY = 1004;
 
 const launcherMaskW = 108;
 const launcherMaskH = 574
+
+const endYLine = 1261;
 
 
 function shuffle(array) {
@@ -71,3 +75,12 @@ function shuffle(array) {
 
   return array;
 }
+
+
+const shufflePatterns = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+];

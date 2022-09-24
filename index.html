@@ -28,7 +28,7 @@
       </form>
       <form id="collisionLengthSquared_form">
         <label for="collisionLengthSquared">Collision Length Squared:</label>
-        <input type="number" id="collisionLengthSquared" value="5000" name="collisionLengthSquared">  <br>
+        <input type="number" id="collisionLengthSquared" value="6000" name="collisionLengthSquared">  <br>
       </form>
       <form id="xbounce_form">
         <label for="xbounce">X Bounce:</label>
@@ -57,6 +57,10 @@
   -->
       <button type="button" onclick="dropRecord()">Drop Recorded Ball</button>
       <button type="button" onclick="dropRecord(true)">Drop Same Recorded Ball</button>
+      <button type="button" onclick="dropRecord(false, 0)">Drop 0 Hit Ball</button>
+      <button type="button" onclick="dropRecord(false, 1)">Drop 1 Hit Ball</button>
+      <button type="button" onclick="dropRecord(false, 2)">Drop 2 Hit Ball</button>
+      <button type="button" onclick="dropRecord(false, 3)">Drop 3 Hit Ball</button>
       <br />
     </body>
 </html>

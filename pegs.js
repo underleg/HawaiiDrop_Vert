@@ -152,9 +152,7 @@ function showPegRings(ballRec) {
 
   for (i = 0; i < ballRec.numPegHits; ++i) {
     let j = ballRec.pegsHit[i] - 1;
-    if (j != 9998) {
-      pegs[j].ring.visible = true;
-    }
+    pegs[j].ring.visible = true;
   }
 }
 
@@ -163,24 +161,68 @@ function showPegRings(ballRec) {
 //
 function randomizePegs() {
 
-  let rowCC2 = 1 + Math.floor(Math.random() * 4);
-  let rowCC3 = 1 + Math.floor(Math.random() * 3);
+  let pegArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  let numOnPegs = 3;
+
+  let shuffledArray = shuffle(pegArray);
 
   for (let i = 0; i < pegs.length; ++i) {
     pegs[i].spriteOn.visible = false;
     pegs[i].spriteOff.visible = true;
-    if (pegs[i].row == 2) {
-      rowCC2--;
-      if (rowCC2 == 0) {
-        pegs[i].spriteOn.visible = true;
-        pegs[i].spriteOff.visible = true;
-      }
-    } else if (pegs[i].row == 3) {
-      rowCC3--;
-      if (rowCC3 == 0) {
-        pegs[i].spriteOn.visible = true;
-        pegs[i].spriteOff.visible = true;
+  }
+
+  for (let j = 0; j < numOnPegs; ++j) {
+    let idx = shuffledArray[j];
+    pegs[idx].sprite
+    pegs[idx].spriteOn.visible = true;
+    pegs[idx].spriteOff.visible = false;
+  }
+}
+
+
+
+////////////////////////////////////
+//
+function forcePegs() {
+
+  // turn off all pegs by default
+  for (let i = 0; i < pegs.length; ++i) {
+    pegs[i].spriteOn.visible = false;
+    pegs[i].spriteOff.visible = true;
+  }
+
+  let hitPegs = shuffle(ballRecords[recordedBallIdx].pegsHit);
+
+  for (i = 0; i < numRecordedBallCCHits; ++i) {
+    let idx = hitPegs[i] - 1;
+    pegs[idx].spriteOn.visible = true;
+    pegs[idx].spriteOff.visible = false;
+  }
+
+
+  let notHitPegs = [];
+
+  for (i = 0; i < 13; ++i) {
+    let hit = false;
+    for (let j = 0; hit == false && j < hitPegs.length; ++j) {
+      if (i == hitPegs[j] - 1) {
+        hit = true;
       }
     }
+    if (hit == false) {
+      notHitPegs[notHitPegs.length] = i;
+    }
   }
+
+  notHitPegs = shuffle(notHitPegs);
+
+  for (i = 0; i < 3 - numRecordedBallCCHits; ++i) {
+    let idx = notHitPegs[i];
+    pegs[idx].spriteOn.visible = true;
+    pegs[idx].spriteOff.visible = false;
+  }
+
+
+
+
 }

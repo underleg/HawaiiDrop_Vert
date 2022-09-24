@@ -14,8 +14,9 @@ let bet = 10;
 let win = 0;
 
 let STATE_WAIT = 1;
-let STATE_FALL = 2;
-let STATE_PRIZE = 3;
+let STATE_LAUNCH = 2;
+let STATE_FALL = 3;
+let STATE_PRIZE = 4;
 
 let state = STATE_WAIT;
 
@@ -165,31 +166,25 @@ function createTally() {
 
 
 ////////////////////////////////////////////////////////
-function dropBall(useRecorded = false) {
+function launchBall(useRecorded = false) {
 
   if (state == STATE_WAIT) {
-    spinButton.interactive = false;
-    spinButton.visible = false;
-    //console.log("throw");
-
-    /*
-    balanceText.cash -= 1.00;
-
-    balanceText.text = balanceText.cash.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    });
-    */
-
-
-    randomizePegs();
    
-    if (useRecorded) {
-      setRecordedBallToDrop();
+    
+    setupLaunchBall(useRecorded);
+
+    resetHammer();
+
+    spinButton.interactive = false;
+    spinButton.alpha = 0.5;
+
+    if (useRecorded == true && numRecordedBallCCHits != -1) {
+      forcePegs();
     } else {
-      pickBallToDrop();
+      randomizePegs();
     }
-    state = STATE_FALL;
+
+    state = STATE_LAUNCH;
   }
 }
 
@@ -207,7 +202,7 @@ function createButton() {
 
   spinButton.on('click', function (e) {
     clearPegRings();
-    dropBall();
+    launchBall();
   });
 
   spinButton.on('mouseover', function (e) {
@@ -237,15 +232,31 @@ function handleWaitState(delta) {
   }
 
   if (useRecordedBall == true) {
-    dropBall(true);
+    launchBall(true);
   } else if (autoRecord == true) {
     if (autoRecordNumber > 0) {
-      dropBall();
+      launchBall();
     } else {
       writeRecord();
       autoRecord = false;
     }
   } 
+}
+
+////////////////////////////////////////////////////////
+//
+function handleLaunchState(delta) {
+
+  let res = false;
+
+
+  if (fireHammer(delta) == true) {
+    res = fireBall(delta);
+  }
+
+  if (res) {
+    state = STATE_FALL;
+  }
 }
 
 
@@ -264,7 +275,7 @@ function handleFallState(delta) {
         resetBalls();
       }
 
-      spinButton.visible = true;
+      spinButton.alpha = 1.0;
       spinButton.interactive = true;
       state = STATE_WAIT;
 
@@ -279,16 +290,14 @@ function handlePrizeState(delta) {
 
 }
 
-
-
-
-
 ////////////////////////////////////////////////////////
 
 function update(delta) {
 
   if (state == STATE_WAIT) {
     handleWaitState(delta);
+  } else if (state == STATE_LAUNCH) {
+    handleLaunchState(delta);
   } else if (state == STATE_FALL) {
     handleFallState(delta);
   } else if (state == STATE_PRIZE) {

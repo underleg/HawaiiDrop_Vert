@@ -6,20 +6,20 @@ let droppingBall = null;
 let tube;
 let launcher;
 let launcherMask;
+let cockCounter = 0.0;
 
 let BALLTYPE_CASH = 1;
 let BALLTYPE_DIAMOND = 2;
 let BALLTYPE_FG = 3;
 
+const HAMMER_WAIT = 0;
+const HAMMER_COCK = 1;
+const HAMMER_FIRE = 2;
+const HAMMER_FLY  = 3;
+const HAMMER_DONE = 4;
 
-/*
-const launchBallX = 65;
-const launchBallStartY = 565;
-const launchBallStartDY = 76;
+let hammerState = HAMMER_WAIT;
 
-const launcherX = 65;
-const launcherY = 821;
-*/
 
 
 ////////////////////////////////////
@@ -32,11 +32,6 @@ function moveBall(timeDelta) {
   droppingBall.sprite.x += droppingBall.dx * timeDelta;
   droppingBall.sprite.y += droppingBall.dy * timeDelta;
 
-  if (droppingBall.sprite.x < minLimitX ||
-    droppingBall.sprite.x > maxLimitX) {
-    droppingBall.outOfBounds = true;
-  }
-  
 }
 
 ///////////////////////////////////////
@@ -78,10 +73,111 @@ function revertBallMove(timeDelta) {
 
 }
 
+////////////////////////////////////////////////////////
+//
+function resetHammer() {
+  hammerState = HAMMER_WAIT;
+}
+
+
+////////////////////////////////////////////////////////
+//
+function glueBallsToHammer() {
+
+  let y = launcher.y - (dropBalls.length * launchBallStartDY) + (launchBallStartDY /2);
+
+  droppingBall.sprite.y = y - launchBallStartDY;
+
+  for (let i = 0; i < dropBalls.length; ++i) {
+    dropBalls[i].sprite.y = y;
+    y += launchBallStartDY;
+  }
+}
+
+////////////////////////////////////////////////////////
+//
+function hammerCockState(delta) {
+  if (launcher.y < launcherBotY) {
+    launcher.y += 10 * delta;
+  } else {
+    cockCounter = 0.0;
+    hammerState = HAMMER_FIRE;
+  }
+
+  glueBallsToHammer();
+}
+
+////////////////////////////////////////////////////////
+//
+function hammerFireState(delta) {
+  if (launcher.y > launcherTopY + (dropBalls.length * launchBallStartDY)) {
+
+    if (cockCounter < 10.0) {
+      cockCounter += delta;
+    } else {
+      launcher.y -= 50 * delta;
+    }
+  } else {
+    launcher.y = launcherTopY + (dropBalls.length * launchBallStartDY);
+    hammerState = HAMMER_FLY;
+  }
+
+  glueBallsToHammer();
+}
+
+
+////////////////////////////////////////////////////////
+//
+function hammerFlyState(delta) {
+  if (droppingBall.y > -100) {
+    droppingBall.y -= 30 * delta;
+  } else {
+    hammerState = HAMMER_DONE;
+  }
+}
+
+////////////////////////////////////////////////////////
+//
+function fireHammer(delta) {
+
+  let res = false;
+
+  if (hammerState == HAMMER_WAIT) {
+    hammerState = HAMMER_COCK;
+  } else if (hammerState == HAMMER_COCK) {
+    hammerCockState(delta);
+  } else if (hammerState == HAMMER_FIRE) {
+    hammerFireState(delta);
+  } else if (hammerState == HAMMER_FLY) {
+    hammerFlyState(delta);
+  } else if (hammerState == HAMMER_DONE) {
+    res = true;
+  }
+
+  return res;
+}
+
+////////////////////////////////////////////////////////
+//
+function fireBall(delta) {
+  let res = false;
+
+  if (droppingBall.sprite.y > -200) {
+    droppingBall.sprite.y -= 50 * delta;
+  } else {
+
+    droppingBall.sprite.x = droppingBall.startDropX;
+    res = true;
+  }
+
+  return res;
+}
 
 ////////////////////////////////////////////////////////
 function isBallDropFinished() {
-  if (droppingBall.sprite.y > ysize + 50) {
+  if (droppingBall.sprite.y > endYLine ||
+    droppingBall.sprite.x < minLimitX ||
+    droppingBall.sprite.x > maxLimitX) {
     return true;
   }
   return false;
@@ -157,12 +253,6 @@ function recordPegCollision(hitPeg) {
     // record new pegs hit
     if (isPegInList(hitPeg) == false) {
       droppingBall.pegsHit[droppingBall.pegsHit.length] = hitPeg.id;
-
-      if (hitPeg.row == 2) {
-        droppingBall.row2 = true;    
-      } else if (hitPeg.row == 3) {
-        droppingBall.row3 = true;
-      }
     }
 
   } else {
@@ -205,19 +295,32 @@ function addBall(type, positionId) {
 }
 
 ////////////////////////////////////////////////////////
-function pickBallToDrop() {
+function setupLaunchBall(useRecorded) {
 
-  let i = Math.floor(Math.random() * dropBalls.length);
+  let i = 0;
   droppingBall = dropBalls[i];
-  droppingBall.startPosition = i;
+
+
   dropBalls.splice(i, 1);
-  let xAdj = 1 + Math.random() * 2;
-  if (Math.random() < 0.5) {
-    xAdj *= -1;
+
+  let dropX;
+  let dropDX;
+
+  if (useRecorded == true) {
+
+    dropX = ballRecords[recordedBallIdx].startX;
+    dropDX = ballRecords[recordedBallIdx].startDX;
+    
+
+  } else {
+
+    dropX = pegStartY - 1 + Math.floor( Math.random() * (pegDX * 2) - 4 );
+    dropDX = Math.floor(Math.random() * 2);
   }
 
-  droppingBall.dx = Math.random() * 2 - 1;
-  droppingBall.sprite.x += xAdj;
+  droppingBall.startDX = dropDX;
+  droppingBall.dx = dropDX;
+  droppingBall.startDropX = dropX;
 
   InitDropBall();
 }
@@ -233,43 +336,17 @@ function InitDropBall() {
   droppingBall.bounceCount = 0;
   droppingBall.repeatBounceCount = 0;
   droppingBall.repeatBounceRecord = 0;
-  droppingBall.outOfBounds = false;
-  droppingBall.row2 = false;
-  droppingBall.row3 = false;
-
 }
 
-////////////////////////////////////////////////////////
-function setRecordedBallToDrop() {
 
-  // pick ball closest to start
-  let dist = 999999;
-  let idx = -1;
-
-  for (let i = 0; i < dropBalls.length; ++i) {
-    let dX = dropBalls[i].sprite.x - ballRecords[recordedBallIdx].startX;
-    dX *= dX;
-    if (dX < dist) {
-      dist = dX;
-      idx = i;
-    }
-  }
-  if (idx == -1) {
-    idx = 0;
-  }
-  droppingBall = dropBalls[idx];
-
-  droppingBall.dx = ballRecords[recordedBallIdx].startDX;
-  droppingBall.sprite.x = ballRecords[recordedBallIdx].startX;
-  InitDropBall();
-}
- 
 ////////////////////////////////////////////////////////
 function createBalls() {
   createLauncher();
   addBall(BALLTYPE_CASH, 0);
   addBall(BALLTYPE_FG, 1);
   addBall(BALLTYPE_DIAMOND, 2);
+  addBall(BALLTYPE_CASH, 3);
+  addBall(BALLTYPE_FG, 4);
 }
 
 ////////////////////////////////////////////////////////
@@ -287,6 +364,8 @@ function resetBalls() {
 
     y += launchBallStartDY;
   }
+
+  launcher.y = launcherTopY + (dropBalls.length * launchBallStartDY);
 }
 
 
