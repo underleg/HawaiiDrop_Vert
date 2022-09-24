@@ -160,7 +160,7 @@ function createTally() {
   tallyMtr = new PIXI.Text(0, fontStyle);
   tallyMtr.anchor.x = tallyMtr.anchor.y = 0.5;
   tallybg.addChild(tallyMtr);
-  tallyMtr.text = "0";
+  tallyMtr.text = "$0.00";
   tallyMtr.value = 0;
 
 }
