@@ -178,6 +178,7 @@ function isBallDropFinished() {
   if (droppingBall.sprite.y > endYLine ||
     droppingBall.sprite.x < minLimitX ||
     droppingBall.sprite.x > maxLimitX) {
+    droppingBall.sprite.visible = false;
     return true;
   }
   return false;
@@ -266,7 +267,7 @@ function recordPegCollision(hitPeg) {
 
 
 ////////////////////////////////////////////////////////
-function addBall(type, positionId) {
+function addBall(type, positionId, value) {
 
   let x = launchBallX;
   let y = launchBallStartY + dropBalls.length * launchBallStartDY;
@@ -287,8 +288,8 @@ function addBall(type, positionId) {
   sprite.y = y;
   sprite.scale.x = sprite.scale.y = ballScale;
 
-  dropBalls[dropBalls.length] = { type: type, dx: 0.0, dy: 0.0, sprite: sprite, ballHit: [] };
-  resetDropBalls[resetDropBalls.length] = { type: type, dx: 0.0, dy: 0.0, sprite: sprite };
+  dropBalls[dropBalls.length] = { type: type, value: value, dx: 0.0, dy: 0.0, sprite: sprite, ballHit: [] };
+  resetDropBalls[resetDropBalls.length] = { type: type, value: value, dx: 0.0, dy: 0.0, sprite: sprite };
 
 
   launcher.y = launcherTopY + dropBalls.length * launchBallStartDY;
@@ -342,11 +343,11 @@ function InitDropBall() {
 ////////////////////////////////////////////////////////
 function createBalls() {
   createLauncher();
-  addBall(BALLTYPE_CASH, 0);
-  addBall(BALLTYPE_FG, 1);
-  addBall(BALLTYPE_DIAMOND, 2);
-  addBall(BALLTYPE_CASH, 3);
-  addBall(BALLTYPE_FG, 4);
+  addBall(BALLTYPE_CASH, 0, 200);
+  addBall(BALLTYPE_FG, 1, 3);
+  addBall(BALLTYPE_DIAMOND, 2, 5000);
+  addBall(BALLTYPE_CASH, 3, 200);
+  addBall(BALLTYPE_FG, 4, 3);
 }
 
 ////////////////////////////////////////////////////////
@@ -358,6 +359,7 @@ function resetBalls() {
     dropBalls[i] = resetDropBalls[i];
     dropBalls[i].sprite.x = launchBallX;
     dropBalls[i].sprite.y = y;
+    dropBalls[i].sprite.visible = true;
     
     dropBalls[i].dx = 0.0;
     dropBalls[i].dy = 0.0;

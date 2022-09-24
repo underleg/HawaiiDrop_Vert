@@ -126,6 +126,27 @@ function checkAllPegCollisions(ball, delta) {
   }
 
   if (collided == true) {
+
+    // have we hit a CC peg?
+    if (hitPeg.spriteOn.visible == true) {
+      hitPeg.spriteOn.visible = false;
+      hitPeg.spriteOff.visible = true;
+      let x = (ball.sprite.x + hitPeg.x) / 2;
+      let y = (ball.sprite.y + hitPeg.y) / 2;
+
+      let tx = 871;
+      let ty = 1511;
+
+      if (ball.type == BALLTYPE_CASH || ball.type == BALLTYPE_DIAMOND) {
+        tx = 538;
+        ty = 1255;
+      }
+      //createPrizeParticles(x, y);
+      createParticleEmitter(ball.type, ball.value, x, y, tx, ty);
+
+    }
+
+    
     recordPegCollision(hitPeg);
     revertBallMove(delta);
     bounceAway(hitPeg, delta);

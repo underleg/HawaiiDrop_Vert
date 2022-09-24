@@ -161,6 +161,7 @@ function createTally() {
   tallyMtr.anchor.x = tallyMtr.anchor.y = 0.5;
   tallybg.addChild(tallyMtr);
   tallyMtr.text = "0";
+  tallyMtr.value = 0;
 
 }
 
@@ -216,6 +217,24 @@ function createButton() {
   spinButton.interactive = true;
 }
 
+
+
+////////////////////////////////////////////////////////
+//
+function updateBallPrize(type, value) {
+  if (type == BALLTYPE_FG) {
+    fgText.totalFG += value;
+    fgText.text = "3/" + fgText.totalFG;
+  } else {
+    tallyMtr.value += value;
+
+    let bal = tallyMtr.value / 100;
+    tallyMtr.text = bal.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+  }
+}
 
 ////////////////////////////////////////////////////////
 // wait for button press
@@ -306,6 +325,8 @@ function update(delta) {
 }
 
 
+
+
 ////////////////////////////////////////////////////////
 // Create the application helper and add its render target to the page
 let isReady = false;
@@ -327,6 +348,7 @@ function ready() {
   createFGMeters();
   createButton();
   createTally();
+  // createParticleEmitter();
 
   randomizePegs();
 
@@ -349,6 +371,8 @@ function ready() {
     delta = 1.0;
 
     update(delta);
+
+    updateParticleEmitters(delta);
 
     elapsed += delta;
 
