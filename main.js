@@ -170,7 +170,8 @@ function createTally() {
 function launchBall(useRecorded = false) {
 
   if (state == STATE_WAIT) {
-   
+
+    clearPegRings();  
     
     setupLaunchBall(useRecorded);
 
@@ -203,7 +204,7 @@ function createButton() {
 
   spinButton.on('click', function (e) {
     clearPegRings();
-    launchBall();
+    dropRecord();  
   });
 
   spinButton.on('mouseover', function (e) {

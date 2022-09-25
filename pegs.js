@@ -26,6 +26,17 @@ function addPeg(row, x, y) {
   sprite2.y = y;
   sprite2.visible = false;
 
+  let name4 = "gfx/peg_coconut_cracked.png";
+
+  let sprite4 = PIXI.Sprite.from(name1);
+  app.stage.addChild(sprite4);
+  sprite4.anchor.x = sprite4.anchor.y = 0.5;
+  sprite4.scale.x = sprite4.scale.y = pegScale;
+
+  sprite4.x = x;
+  sprite4.y = y;
+  sprite4.visible = false;
+
   let name3 = "gfx/ring.png";
 
   let sprite3 = PIXI.Sprite.from(name3);
@@ -36,9 +47,11 @@ function addPeg(row, x, y) {
   sprite3.y = y;
   sprite3.visible = false;
 
+  
+
   let idx = pegs.length;
 
-  pegs[idx] = { id: (idx+1), row: row, x: x, y: y, spriteOff: sprite1, spriteOn: sprite2, ring: sprite3 };
+  pegs[idx] = { id: (idx + 1), row: row, x: x, y: y, spriteOff: sprite1, spriteOn: sprite2, spriteCrack: sprite4, ring: sprite3 };
 }
 
 
@@ -101,7 +114,7 @@ function areBallAndPegColliding(peg, ball) {
   let y1 = peg.y;
   let y2 = ball.sprite.y;
 
-  let collisionLengthSquared = document.getElementById("collisionLengthSquared").value;
+  // let collisionLengthSquared = document.getElementById("collisionLengthSquared").value;
 
 
   let d2 = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
@@ -117,7 +130,7 @@ function checkAllPegCollisions(ball, delta) {
 
   let hitPeg;
   let collided = false;
-
+  
   for (let i = 0; collided == false && i < pegs.length; ++i) {
     if (areBallAndPegColliding(pegs[i], ball)) {
       collided = true;

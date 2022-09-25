@@ -5,8 +5,18 @@ let records = [];
 ////////////////////////////////////////////////////////
 // 
 function recordBall() {
-  
-  if (droppingBall.repeatBounceRecord < 4 &&
+
+  // check ball hit a lower peg
+  let hitBelow8 = false;
+
+  for (let j = 0; hitBelow8==false && j < droppingBall.pegsHit.length; ++j) {
+    if (droppingBall.pegsHit[j] >= 9) {
+      hitBelow8 = true;
+    }
+  }
+
+  if (hitBelow8 &&
+    droppingBall.repeatBounceRecord < 4 &&
     droppingBall.pegsHit.length >= 4 &&
     droppingBall.pegsHit.length < 10) {
 
@@ -44,11 +54,34 @@ function dropRecord(sameBall=false, numHits = -1) {
   
   if (sameBall != true) {
     recordedBallIdx = Math.floor(Math.random() * ballRecords.length);
-  }
+  } 
   // printDroppingRecord(ballRecords[recordedBallIdx]);
 
   if (numHits == -1) {
     showPegRings(ballRecords[recordedBallIdx]);
+  }
+
+  // do it by maths
+  if (sameBall == false && numHits == -1) {
+    let cc0 = Number(document.getElementById("cc0").value);
+    let cc1 = Number(document.getElementById("cc1").value);
+    let cc2 = Number(document.getElementById("cc2").value);
+    let cc3 = Number(document.getElementById("cc3").value);
+    let sum = cc0 + cc1 + cc2 + cc3;
+
+    let r = Math.floor(Math.random() * sum);
+
+    if (r < cc0) {
+      numRecordedBallCCHits = 0;
+    } else if (r < cc0+cc1) {
+      numRecordedBallCCHits = 1;
+    } else if (r < cc0+cc1+cc2) {
+      numRecordedBallCCHits = 2;
+    } else {
+      numRecordedBallCCHits = 3;
+    }
+
+    console.log("cc num = " + numRecordedBallCCHits)
   }
 }
 
@@ -102,11 +135,9 @@ function writeRecord() {
 
   // record settings in comments
   let s = "\n////////////////////////////////////////////////////////////";
-  s += "\n// gravity = " + document.getElementById("gravity").value;
-  s += "\n// xbounce = " + document.getElementById("xbounce").value;
-  s += "\n// ybounce = " + document.getElementById("ybounce").value;
-  s += "\n// dxLim = " + document.getElementById("dxLim").value;
-  s += "\n// magLim = " + document.getElementById("magLim").value;
+  //s += "\n// xbounce = " + document.getElementById("xbounce").value;
+  //s += "\n// ybounce = " + document.getElementById("ybounce").value;
+  //s += "\n// dxLim = " + document.getElementById("dxLim").value;
   s += "\n////////////////////////////////////////////////////////////"
 
 

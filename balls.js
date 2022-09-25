@@ -26,8 +26,6 @@ let hammerState = HAMMER_WAIT;
 //
 function moveBall(timeDelta) {
   timeDelta = 1.0;
-  //console.log(timeDelta);
-  let gravity = document.getElementById("gravity").value;
   droppingBall.dy += gravity * timeDelta;
   droppingBall.sprite.x += droppingBall.dx * timeDelta;
   droppingBall.sprite.y += droppingBall.dy * timeDelta;
@@ -68,7 +66,6 @@ function revertBallMove(timeDelta) {
   timeDelta = 1.0;
   droppingBall.sprite.x -= droppingBall.dx * timeDelta;
   droppingBall.sprite.y -= droppingBall.dy * timeDelta;
-  let gravity = document.getElementById("gravity").value;
   droppingBall.dy -= gravity * timeDelta;
 
 }
@@ -198,11 +195,8 @@ function bounceAway(peg, timeDelta) {
 
   var ang = Math.atan2(pb.y, pb.x);
 
-  let xbounce = document.getElementById("xbounce").value;
-  let ybounce = document.getElementById("ybounce").value;
-
-  let magLim = document.getElementById("magLim").value;
-
+  
+  
   if (mag > magLim) {
     mag = magLim;
   }
@@ -214,7 +208,7 @@ function bounceAway(peg, timeDelta) {
   droppingBall.dx -= ax;
   droppingBall.dy -= ay;
 
-  let dxLim = document.getElementById("dxLim").value;
+  // let dxLim = document.getElementById("dxLim").value;
 
   // make sure there's x movement
   if (droppingBall.dx > -dxLim && droppingBall.dx < dxLim) {

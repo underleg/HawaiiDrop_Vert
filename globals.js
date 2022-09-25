@@ -1,6 +1,6 @@
 
 const gravity = 0.5;
-const collisionLengthSquared = 1200;
+const collisionLengthSquared = 6000;
 const xbounce = 1.3;
 const ybounce = 1.5;
 const dxLim = 0.4;
