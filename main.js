@@ -291,7 +291,7 @@ function handleFallState(delta) {
   if (checkAllPegCollisions(getDroppingBall(), delta) == false) {
     if (isBallDropFinished()) {
       recordBall();
-      if (!areThereMoreBalls() || useRecordedBall == true) {
+      if (!areThereMoreBalls()) {
         resetBalls();
       }
 

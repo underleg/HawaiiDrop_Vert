@@ -81,7 +81,7 @@ function dropRecord(sameBall=false, numHits = -1) {
       numRecordedBallCCHits = 3;
     }
 
-    console.log("cc num = " + numRecordedBallCCHits)
+    console.log("cc num = " + numRecordedBallCCHits);
   }
 }
 
