@@ -17,8 +17,13 @@ const halfx = xsize / 2;
 // 1.266
 
 const pegStartY = 274;
-const pegDX = 262;//252;//242;
-const pegDY = 196;
+//const pegDX = 262;//252;//242;
+//const pegDY = 196;
+
+
+const pegDX = 320;//252;//242;
+const pegDY = 160;
+
 
 const buttonX = halfx;
 const buttonY = 1473;
