@@ -65,7 +65,9 @@ function createPegBoard() {
   let stepy = pegDY;
   
   // 1st row
-  x -= stepx;
+  x -= (stepx * 1.5);
+  addPeg(1, x, y);
+  x += stepx;
   addPeg(1, x, y);
   x += stepx;
   addPeg(1, x, y);
@@ -74,14 +76,18 @@ function createPegBoard() {
 
   // 2nd row
   y += stepy;
-  x = (xsize / 2) - (stepx * 0.5);
+  x = (xsize / 2) - stepx;
+  addPeg(2, x, y);
+  x += stepx;
   addPeg(2, x, y);
   x += stepx;
   addPeg(2, x, y);
 
   // 3rd row
   y += stepy;
-  x = (xsize / 2) - stepx;
+  x = (xsize / 2) - (stepx * 1.5);
+  addPeg(3, x, y);
+  x += stepx;
   addPeg(3, x, y);
   x += stepx;
   addPeg(3, x, y);
@@ -90,14 +96,18 @@ function createPegBoard() {
 
   // 4th row
   y += stepy;
-  x = (xsize / 2) - (stepx * 0.5);
+  x = (xsize / 2) - stepx;
+  addPeg(4, x, y);
+  x += stepx;
   addPeg(4, x, y);
   x += stepx;
   addPeg(4, x, y);
 
   // 5th row
   y += stepy;
-  x = (xsize / 2) - stepx;
+  x = (xsize / 2) - (stepx * 1.5);
+  addPeg(5, x, y);
+  x += stepx;
   addPeg(5, x, y);
   x += stepx;
   addPeg(5, x, y);
@@ -236,7 +246,7 @@ function forcePegs() {
 
   let notHitPegs = [];
 
-  for (i = 0; i < 13; ++i) {
+  for (i = 0; i < numPegs; ++i) {
     let hit = false;
     for (let j = 0; hit == false && j < hitPegs.length; ++j) {
       if (i == hitPegs[j] - 1) {

@@ -111,11 +111,13 @@ function getPegCount(id) {
 // 
 function showRecordCounts() {
   let s = "Peg Hit Counts \n";
-  s += "\t " + getPegCount(1) + "\t " + getPegCount(2) + "\t " + getPegCount(3) + "\n";
-  s += "\t" + getPegCount(4) + "\t" + getPegCount(5) + "\n";
-  s += "\t " + getPegCount(6) + "\t " + getPegCount(7) + "\t " + getPegCount(8) + "\n";
-  s += "\t" + getPegCount(9) + "\t" + getPegCount(10) + "\n";
-  s += "\t " + getPegCount(11) + "\t " + getPegCount(12) + "\t " + getPegCount(13) + "\n";
+  s += "\t " + getPegCount(1) + "\t " + getPegCount(2) + "\t " + getPegCount(3) + "\t " + getPegCount(4) + "\n";
+  s += "\t" + getPegCount(5) + "\t" + getPegCount(6) + "\t" + getPegCount(7) + "\n";
+  s += "\t " + getPegCount(8) + "\t " + getPegCount(9) + "\t " + getPegCount(10) + "\t " + getPegCount(11) + "\n";
+  s += "\t" + getPegCount(12) + "\t" + getPegCount(13) + "\t" + getPegCount(14) + "\n";
+  s += "\t " + getPegCount(15) + "\t " + getPegCount(16) + "\t " + getPegCount(17) + "\t " + getPegCount(18) + "\n";
+  
+  
   s += "\n\t\t";
   console.log(s);
 }

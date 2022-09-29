@@ -1,6 +1,6 @@
 
 const gravity = 0.5;
-const collisionLengthSquared = 6000;
+const collisionLengthSquared = 4000;//6000;
 const xbounce = 1.3;
 const ybounce = 1.5;
 const dxLim = 0.4;
@@ -16,12 +16,14 @@ const halfx = xsize / 2;
 
 // 1.266
 
+const numPegs = 18;
+
 const pegStartY = 274;
 //const pegDX = 262;//252;//242;
 //const pegDY = 196;
 
 
-const pegDX = 320;//252;//242;
+const pegDX = 212;//252;//242;
 const pegDY = 160;
 
 
@@ -30,8 +32,8 @@ const buttonY = 1473;
 
 const pegChangeInterval = 30.0; // half second
 
-const pegScale = 0.9;
-const ballScale = 0.85;
+const pegScale = 0.75;//0.9;
+const ballScale = 0.75;//0.85;
 
 const minLimitX = -80;
 const maxLimitX = xsize + 80;
